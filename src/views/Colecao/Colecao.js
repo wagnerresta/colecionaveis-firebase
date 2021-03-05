@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, FlatList } from 'react-native';
+import { Text, View, TouchableOpacity, FlatList,Image } from 'react-native';
 import estiloColecao from './estiloColecao';
 import ItemLista from '../../components/ItemLista/ItemLista';
 import { MaterialIcons } from '@expo/vector-icons';
+import estiloItemLista from '../../components/ItemLista/estiloItemLista';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
 
 function Colecao({ navigation }) {
 
@@ -46,6 +49,34 @@ function Colecao({ navigation }) {
         navigation.navigate('Inicial')
     }
     
+    const selectItem = (item) => {
+        console.log('chegou no select item');
+        navigation.navigate('Item', {
+            item: item,
+            otherParam: 'anything you want here',
+          });
+        
+    }
+     const listItem = ({item}) => {
+        return (
+            <View  style={estiloItemLista.areaItens}>
+                  <TouchableOpacity onPress={() => selectItem({item})}>
+                <LinearGradient colors={['#14417b', '#92afd7', '#92afd7']}>
+                    <Text style={estiloItemLista.itemTitulo}> {item.titulo} </Text>
+                    </LinearGradient>
+                    <Text style={estiloItemLista.itemSubTitulo}> {item.autor} ({item.anoPublicacao}) </Text>
+                <LinearGradient colors={['#92afd7', '#92afd7', '#14417b']}>
+                    <Image 
+                    resizeMode='contain'
+                    style={estiloItemLista.itemFoto}
+                    source={item.foto}
+                    />
+                </LinearGradient>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+    
     return (
         <View style={estiloColecao.container}>
 
@@ -61,8 +92,8 @@ function Colecao({ navigation }) {
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item) => item.id}
                 data={colecao}
-                renderItem={ ({item}) => <ItemLista data={item} />}
-            />
+                renderItem={({item}) => listItem ({item}) }
+                />
 
         </View>
     )

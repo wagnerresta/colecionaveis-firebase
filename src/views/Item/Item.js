@@ -2,8 +2,10 @@ import React from 'react';
 import { Text, View, TouchableOpacity } from 'react-native';
 import estiloItem from './estiloItem';
 
-function Item({ navigation }) {
-
+function Item({route, navigation }) {
+ 
+   const { item } = route.params;
+   console.log(item);
     const voltar = () => {
         navigation.navigate('Inicial')
     }
@@ -13,7 +15,7 @@ function Item({ navigation }) {
             <View style={estiloItem.borda}>
 
                 <Text style={estiloItem.texto}>Item</Text>
-
+                <Text style={estiloItem.texto}>{item.item.descricao}</Text>
                 <TouchableOpacity style={estiloItem.botaoContainer} onPress={voltar}>
                     <Text style={estiloItem.botaoTexto}>Voltar</Text>
                 </TouchableOpacity>
